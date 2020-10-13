@@ -1,3 +1,8 @@
+RANS64_L = 2**30
+MIN_PROB = 8
+prob_bits = 14
+prob_scale = 1 << prob_bits
+
 def argmax(values):
     if not values:
         return -1 # Empty list has no argmax

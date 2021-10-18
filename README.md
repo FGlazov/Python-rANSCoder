@@ -1,6 +1,14 @@
 # Introduction
 This is a lightweight, pure python version of a rANSCoder. A rANSCoder is an entropy coder, which was first described in Jarek Duda's paper (http://arxiv.org/abs/1311.2540). This variant of rANS works on 64 bits and emits 32-bit words at the same time. It is a port of Fabien Giesen 64 bit rANSCoder to python. It should be compatible with the functions rANS64XXXXXX in Giesen's project - i.e. you could therotically encode or decode with this project, and do the other step via Giesen's code.
 
+# Installation
+
+This repisotory is available via pip. You can install it as follows.
+
+```
+pip install py_rans
+```
+
 # Purpose
 
 The focus of this repository is not performance, but rather rapid prototyping. This entropy coder will provide compresion performance which is close to entropy at a reasonable speed. If you want the same compression performance and higher compression you should look at a C/C++ library fufilling those needs - I can recommend either Giesen's or Bonfield's implementation of rANS. The following are the Github links to their two projects:

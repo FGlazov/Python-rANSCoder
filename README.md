@@ -1,5 +1,5 @@
 # Introduction
-This is a lightweight, pure python version of a rANSCoder. A rANSCoder is an entropy coder, which was first described in Jarek Duda's paper (http://arxiv.org/abs/1311.2540). This variant of rANS works on 64 bits and emits 32-bit words at the same time. It is a port of Fabien Giesen 64 bit rANSCoder to python. It should be compatible with the functions rANS64XXXXXX in Giesen's project - i.e. you could therotically encode or decode with this project, and do the other step via Giesen's code.
+This is a lightweight, pure python version of a rANSCoder. A rANSCoder is an entropy coder, which was first described in Jarek Duda's paper (http://arxiv.org/abs/1311.2540). This variant of rANS works on 64 bits and emits 32-bit words at the same time. It is a port of Fabien Giesen 64 bit rANSCoder to python. It should be compatible with the functions rANS64XXXXXX in Giesen's project - i.e. you could theoretically encode or decode with this project, and do the other step via Giesen's code.
 
 # Installation
 

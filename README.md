@@ -3,7 +3,7 @@ This is a lightweight, pure python version of a rANSCoder. A rANSCoder is an ent
 
 # Installation
 
-This repisotory is available via pip. You can install it as follows.
+This repository is available via pip. You can install it as follows.
 
 ```
 pip install py_rans

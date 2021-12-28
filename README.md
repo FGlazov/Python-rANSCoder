@@ -23,7 +23,7 @@ The API is deliberately kept very simple, with a single way to use the rANSCoder
 To encode something, you would do the following:
 
 ```python
-import rANSCoder as rANS
+import rans.rANSCoder as rANS
 import random
 
 encoder = rANS.Encoder()
@@ -42,7 +42,7 @@ print("The number of bytes needed is: " + str(len(encoded) * 4))
 And later, to decode:
 
 ```python
-import rANSCoder as rANS
+import rans.rANSCoder as rANS
 
 # Given: length_decoded, encoded, probs
 # Assuming the previous code snippet was how it was encoded, then:

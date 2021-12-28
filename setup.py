@@ -11,7 +11,7 @@ setuptools.setup(
     description="A lightweight, pure python implementation of a rANS coder.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/FGlazov/Python-rANSCoder",
     packages=setuptools.find_packages(where="src"),
     package_dir={"": "src"},
     classifiers=[

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="py_rans",
-    version="1.0.1",
+    version="1.0.2",
     author="Fedor Glazov",
     author_email="fedorglazov@gmail.com",
     description="A lightweight, pure python implementation of a rANS coder.",

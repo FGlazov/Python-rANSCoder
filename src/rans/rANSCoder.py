@@ -1,8 +1,12 @@
+import numpy as np
+
 RANS64_L = 2**30
 MIN_PROB = 8
 prob_bits = 14
 prob_scale = 1 << prob_bits
-
+import numba
+from numba import types
+@numba.jit(nopython=True)
 def argmax(values):
     if not values:
         return -1 # Empty list has no argmax
@@ -18,6 +22,7 @@ def argmax(values):
 
 
 
+@numba.jit(nopython=True)
 def float_to_int_probs(float_probs):
     pdf = []
     cdf = [0]
@@ -42,6 +47,7 @@ def float_to_int_probs(float_probs):
 
     return (pdf, cdf)
 
+@numba.jit(nopython=True)
 def find_in_int_dist(cdf, to_find):
 
     for i in range(len(cdf) - 1):
@@ -50,10 +56,15 @@ def find_in_int_dist(cdf, to_find):
 
     print ("Error: Could not find symbol in integer-dist")
 
+spec = [
+    ('state', numba.int64),
+    ('encoded_data', types.ListType(types.int64)),
+]
+@numba.experimental.jitclass(spec=spec)
 class Encoder:
     def __init__(self):
         self.state = RANS64_L
-        self.encoded_data = []
+        self.encoded_data = numba.typed.List.empty_list(types.int64)
 
     def encode_symbol(self, freqs, symbol):
         (pdf, cdf) =  float_to_int_probs(freqs)

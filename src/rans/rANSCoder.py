@@ -5,6 +5,7 @@ prob_scale = 1 << prob_bits
 import numba
 from numba import types
 from numba.experimental import jitclass
+
 @numba.jit(nopython=True)
 def argmax(values):
     if not values:
@@ -56,14 +57,14 @@ def find_in_int_dist(cdf, to_find):
     print ("Error: Could not find symbol in integer-dist")
 
 spec = [
-    ('state', numba.int64),
-    ('encoded_data', types.ListType(types.int64)),
+    ('state', numba.uint64),
+    ('encoded_data', types.ListType(types.uint32)),
 ]
 @jitclass(spec=spec)
 class Encoder:
     def __init__(self):
         self.state = RANS64_L
-        self.encoded_data = numba.typed.List.empty_list(types.int64)
+        self.encoded_data = numba.typed.List.empty_list(types.uint32)
 
     def encode_symbol(self, freqs, symbol):
         (pdf, cdf) =  float_to_int_probs(freqs)
@@ -78,20 +79,20 @@ class Encoder:
 
         x_max = ((RANS64_L >> prob_bits) << 32) * freq
         if x >= x_max:
-            self.encoded_data.append(x & 0xffffffff)
+            self.encoded_data.append(types.uint32(x & 0xffffffff))
             x >>= 32
 
         self.state = ((x // freq) << prob_bits) + (x % freq) + start
 
     def get_encoded(self):
-        self.encoded_data.append(self.state & 0xffffffff)
+        self.encoded_data.append(types.uint32(self.state & 0xffffffff))
         self.state >>= 32
-        self.encoded_data.append(self.state & 0xffffffff)
+        self.encoded_data.append(types.uint32(self.state & 0xffffffff))
         return self.encoded_data
 
 spec = [
-    ('state', numba.int64),
-    ('encoded_data', types.ListType(types.int64)),
+    ('state', numba.uint64),
+    ('encoded_data', types.ListType(types.uint32)),
 ]
 @jitclass(spec=spec)
 class Decoder:

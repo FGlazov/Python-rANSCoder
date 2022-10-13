@@ -1,11 +1,10 @@
-import numpy as np
-
 RANS64_L = 2**30
 MIN_PROB = 8
 prob_bits = 14
 prob_scale = 1 << prob_bits
 import numba
 from numba import types
+from numba.experimental import jitclass
 @numba.jit(nopython=True)
 def argmax(values):
     if not values:
@@ -60,7 +59,7 @@ spec = [
     ('state', numba.int64),
     ('encoded_data', types.ListType(types.int64)),
 ]
-@numba.experimental.jitclass(spec=spec)
+@jitclass(spec=spec)
 class Encoder:
     def __init__(self):
         self.state = RANS64_L
@@ -90,6 +89,11 @@ class Encoder:
         self.encoded_data.append(self.state & 0xffffffff)
         return self.encoded_data
 
+spec = [
+    ('state', numba.int64),
+    ('encoded_data', types.ListType(types.int64)),
+]
+@jitclass(spec=spec)
 class Decoder:
     def __init__(self, encoded_data):
         self.state = (encoded_data.pop() << 32) | encoded_data.pop()

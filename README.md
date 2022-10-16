@@ -25,10 +25,12 @@ To encode something, you would do the following:
 ```python
 import rans.rANSCoder as rANS
 import random
+import numpy as np
 
 encoder = rANS.Encoder()
-probs = [0.1, 0.2, 0.3, 0.05, 0.05, 0.15, 0.05, 0.1]
-data = [random.randint(0,7) for i in range(10000)]
+probs = np.array([0.1, 0.2, 0.3, 0.05, 0.05, 0.15, 0.05, 0.1], dtype=np.float32)
+data = np.array([random.randint(0,7) for i in range(10000)], dtype=np.int32)
+# Use numpy arrays for better performance! Numba works better with numpy arrays than vanilla python arrays.
 
 for symbol in data:
     encoder.encode_symbol(probs, symbol)

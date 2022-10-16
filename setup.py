@@ -19,4 +19,7 @@ setuptools.setup(
         "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
         "Operating System :: OS Independent",
     ],
+    install_requires=[
+        'numba==0.56.3'
+    ]
 )

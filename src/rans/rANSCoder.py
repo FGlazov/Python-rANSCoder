@@ -1,10 +1,18 @@
+import warnings
+
+import numba
+from numba import types
+from numba.core.errors import NumbaPendingDeprecationWarning
+from numba.experimental import jitclass
+
+# Disable warning that comes when pure python list is passed to functions below.
+# We use a specific version of numba that is still compatible with pure python lists.
+warnings.simplefilter('ignore', category=NumbaPendingDeprecationWarning)
+
 RANS64_L = 2 ** 30
 MIN_PROB = 8
 prob_bits = 14
 prob_scale = 1 << prob_bits
-import numba
-from numba import types
-from numba.experimental import jitclass
 
 
 @numba.jit(nopython=True)

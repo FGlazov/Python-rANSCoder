@@ -1,4 +1,4 @@
-RANS64_L = 2**30
+RANS64_L = 2 ** 30
 MIN_PROB = 8
 prob_bits = 14
 prob_scale = 1 << prob_bits
@@ -6,20 +6,20 @@ import numba
 from numba import types
 from numba.experimental import jitclass
 
+
 @numba.jit(nopython=True)
 def argmax(values):
     if not values:
-        return -1 # Empty list has no argmax
+        return -1  # Empty list has no argmax
 
     current_max = values[0]
     current_max_index = 0
-    for i in range(1,len(values)):
+    for i in range(1, len(values)):
         if values[i] > current_max:
             current_max = values[i]
             current_max_index = i
 
     return current_max_index
-
 
 
 @numba.jit(nopython=True)
@@ -44,22 +44,24 @@ def float_to_int_probs(float_probs):
     for i in range(largest_index + 1, len(cdf)):
         cdf[i] += to_correct
 
+    return pdf, cdf
 
-    return (pdf, cdf)
 
 @numba.jit(nopython=True)
 def find_in_int_dist(cdf, to_find):
-
     for i in range(len(cdf) - 1):
         if cdf[i] <= to_find and cdf[i + 1] > to_find:
             return i
 
-    print ("Error: Could not find symbol in integer-dist")
+    print("Error: Could not find symbol in integer-dist")
+
 
 spec = [
     ('state', numba.uint64),
     ('encoded_data', types.ListType(types.uint32)),
 ]
+
+
 @jitclass(spec=spec)
 class Encoder:
     def __init__(self):
@@ -67,12 +69,12 @@ class Encoder:
         self.encoded_data = numba.typed.List.empty_list(types.uint32)
 
     def encode_symbol(self, freqs, symbol):
-        (pdf, cdf) =  float_to_int_probs(freqs)
+        (pdf, cdf) = float_to_int_probs(freqs)
         freq = pdf[symbol]
         start = cdf[symbol]
 
         if freq == 0:
-            print ("Error: Can't encode symbol with frequency 0!")
+            print("Error: Can't encode symbol with frequency 0!")
             return
 
         x = self.state
@@ -90,10 +92,13 @@ class Encoder:
         self.encoded_data.append(types.uint32(self.state & 0xffffffff))
         return self.encoded_data
 
+
 spec = [
     ('state', numba.uint64),
     ('encoded_data', types.ListType(types.uint32)),
 ]
+
+
 @jitclass(spec=spec)
 class Decoder:
     def __init__(self, encoded_data):

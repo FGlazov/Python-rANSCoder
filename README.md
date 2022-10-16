@@ -64,7 +64,9 @@ If you run the two code snippets in order, then you will need to call decoded_da
 
 # API more formally
 
-This python package consists of two classes, Encoder and Decoder. There are also a few helper functions outside of the two classes - but they are not meant to be used as part of the public API - this package is meant to be interfaced with solely through the two classes.
+This python package consists of two classes, Encoder and Decoder. There are also a few helper functions outside of the two classes - but they are not meant to be used as part of the public API - this package is meant to be interfaced with solely through the two classes. All of the code is wrapped in numba wrappers, which compiles the code just in time before use. The first call to any method will take longer than any calls following it.
+
+
 
 The Encoder is responsible for taking the uncompressed data and compressing it. It is an entropy coder, so it expects data and a corresponding model (i.e. probability distribution which says how frequent a given symbol is). The Encoder's constructor takes no arguments, so you may simply construct it via ```encoder = rANS.Encoder()```.
 

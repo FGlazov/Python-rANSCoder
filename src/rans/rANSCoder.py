@@ -2,7 +2,11 @@ RANS64_L = 2**30
 MIN_PROB = 8
 prob_bits = 14
 prob_scale = 1 << prob_bits
+import numba
+from numba import types
+from numba.experimental import jitclass
 
+@numba.jit(nopython=True)
 def argmax(values):
     if not values:
         return -1 # Empty list has no argmax
@@ -18,6 +22,7 @@ def argmax(values):
 
 
 
+@numba.jit(nopython=True)
 def float_to_int_probs(float_probs):
     pdf = []
     cdf = [0]
@@ -42,6 +47,7 @@ def float_to_int_probs(float_probs):
 
     return (pdf, cdf)
 
+@numba.jit(nopython=True)
 def find_in_int_dist(cdf, to_find):
 
     for i in range(len(cdf) - 1):
@@ -50,10 +56,15 @@ def find_in_int_dist(cdf, to_find):
 
     print ("Error: Could not find symbol in integer-dist")
 
+spec = [
+    ('state', numba.uint64),
+    ('encoded_data', types.ListType(types.uint32)),
+]
+@jitclass(spec=spec)
 class Encoder:
     def __init__(self):
         self.state = RANS64_L
-        self.encoded_data = []
+        self.encoded_data = numba.typed.List.empty_list(types.uint32)
 
     def encode_symbol(self, freqs, symbol):
         (pdf, cdf) =  float_to_int_probs(freqs)
@@ -68,17 +79,22 @@ class Encoder:
 
         x_max = ((RANS64_L >> prob_bits) << 32) * freq
         if x >= x_max:
-            self.encoded_data.append(x & 0xffffffff)
+            self.encoded_data.append(types.uint32(x & 0xffffffff))
             x >>= 32
 
         self.state = ((x // freq) << prob_bits) + (x % freq) + start
 
     def get_encoded(self):
-        self.encoded_data.append(self.state & 0xffffffff)
+        self.encoded_data.append(types.uint32(self.state & 0xffffffff))
         self.state >>= 32
-        self.encoded_data.append(self.state & 0xffffffff)
+        self.encoded_data.append(types.uint32(self.state & 0xffffffff))
         return self.encoded_data
 
+spec = [
+    ('state', numba.uint64),
+    ('encoded_data', types.ListType(types.uint32)),
+]
+@jitclass(spec=spec)
 class Decoder:
     def __init__(self, encoded_data):
         self.state = (encoded_data.pop() << 32) | encoded_data.pop()

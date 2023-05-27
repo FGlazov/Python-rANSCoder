@@ -11,7 +11,7 @@ pip install py_rans
 
 # Purpose
 
-The focus of this repository is not performance, but rather rapid prototyping. This entropy coder will provide compresion performance which is close to entropy at a reasonable speed. If you want the same compression performance and higher compression you should look at a C/C++ library fufilling those needs - I can recommend either Giesen's or Bonfield's implementation of rANS. The following are the Github links to their two projects:
+The focus of this repository is not performance, but rather rapid prototyping. This entropy coder will provide compresion performance which is close to entropy at a reasonable speed. If you want the same compression performance and higher compression speed you should look at a C/C++ library fufilling those needs - I can recommend either Giesen's or Bonfield's implementation of rANS. The following are the Github links to their two projects:
 
 -    https://github.com/rygorous/ryg_rans
 -    https://github.com/jkbonfield/rans_static

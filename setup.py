@@ -20,6 +20,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'numba==0.56.3'
+        'numba>=0.56.3'
     ]
 )
